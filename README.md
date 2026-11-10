@@ -7,12 +7,6 @@ how to use [monavi](https://monavi.app/) to drive the user's real browser throug
 ## Install
 
 ```bash
-npx skills add taosher/monavi --skill monavi
-```
-
-Or install it globally for every project:
-
-```bash
 npx skills add taosher/monavi --skill monavi -g
 ```
 
