@@ -1,6 +1,6 @@
 # Session and task management
 
-A monavi task is one agent session with its own tab group. Use a stable session name and reuse it for every command in that task.
+A monavi task is one agent session with its own controlled tab (or tab group where the browser supports it). Use a stable session name and reuse it for every command in that task.
 
 ## Name the session
 
@@ -18,7 +18,7 @@ Monavi also derives a session from the working directory when you do not pass `-
 
 Each monavi task has:
 
-- its own task ID and tab group;
+- its own task ID and controlled tabs;
 - its own controlled tabs and active tab;
 - its own refs and page state;
 - independent approval and takeover state.
@@ -27,7 +27,7 @@ The user's browser shares cookies, localStorage, IndexedDB, cache, and login sta
 
 ## Parallel tasks
 
-A device can run several tasks at once, each with its own tab group. Give each agent a distinct `--session` and do not operate on another task's tab. Close your own session when done.
+A device can run several tasks at once, each with its own controlled tab or tab group. Give each agent a distinct `--session` and do not operate on another task's tab. Close your own session when done.
 
 ```bash
 monavi browser --session research open https://docs.example.com
@@ -50,9 +50,9 @@ monavi browser session info --json
 monavi browser close
 ```
 
-Use the same `--session` name if you used one. Closing ends the task and lets the extension destroy the tab group immediately. The extension's **Keep tabs after a session ends** setting decides whether the tabs stay open; still close the session.
+Use the same `--session` name if you used one. Closing ends the task and lets the extension clean up the task's tabs immediately. The extension's **Keep tabs after a session ends** setting decides whether the tabs stay open; still close the session.
 
-Do not leave a task open after answering the user. TTL is only a fallback, and an open task keeps the tab group alive until it expires.
+Do not leave a task open after answering the user. TTL is only a fallback, and an open task keeps its tabs alive until it expires.
 
 ## What not to use
 

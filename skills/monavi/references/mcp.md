@@ -58,7 +58,7 @@ const results = await browser.batch([
 ]);
 ```
 
-`browser.session(name)` creates a named session with its own task, tab group, and approval. The default `browser` is the `default` session:
+`browser.session(name)` creates a named session with its own task, controlled tabs (or tab group), and approval. The default `browser` is the `default` session:
 
 ```js
 const research = browser.session("research");

@@ -6,7 +6,7 @@ allowed-tools: Bash(monavi:*)
 
 # monavi
 
-monavi lets you work in the user's real browser. The user stays in control: the first browser command creates a task, and the user approves it in the monavi extension. The task gets its own tab group, and the user can take over or stop it at any time.
+monavi lets you work in the user's real browser. The user stays in control: the first browser command creates a task, and the user approves it in the monavi extension. The task gets its own controlled tab (grouped when the browser supports tab groups), and the user can take over or stop it at any time.
 
 Use `monavi browser` for every page action. It runs the browser runtime bundled with monavi, so there is nothing else to install or configure.
 
@@ -32,7 +32,7 @@ monavi browser --session invoice-check snapshot -i
 
 If `MONAVI_TASK_ID` is set, use it as the task identity. Keep it stable for the whole session. Do not reuse a task ID after the task has ended.
 
-Each task owns a browser tab group. A page opened by the controlled tab can join the same task group; use `monavi browser tab` to see the tabs. Commands apply to the active tab; re-snapshot after switching.
+Each task owns a dedicated controlled tab. In browsers that support tab groups, every tab in the task shares one `monavi · <label>` group; browsers without tab groups keep the task isolated by tab. A page opened by the controlled tab can join the same task; use `monavi browser tab` to see the tabs. Commands apply to the active tab; re-snapshot after switching.
 
 ## Approval and interruption
 
@@ -165,9 +165,9 @@ Close the session when the work is done, or when the task fails and will not con
 monavi browser close
 ```
 
-Use the same `--session` name if you used one. This ends the task and lets the extension clean up the tab group immediately. If the user wants to keep the tabs, the extension's **Keep tabs after a session ends** setting decides whether they stay open; still close the session.
+Use the same `--session` name if you used one. This ends the task and lets the extension clean up the task's tabs immediately. If the user wants to keep the tabs, the extension's **Keep tabs after a session ends** setting decides whether they stay open; still close the session.
 
-Do not leave a task open after answering the user. An open task keeps the tab group alive until the task expires.
+Do not leave a task open after answering the user. An open task keeps its tabs alive until the task expires.
 
 ## Setup and MCP
 
