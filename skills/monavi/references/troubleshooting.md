@@ -5,20 +5,24 @@
 | Symptom | Action |
 |---|---|
 | `AUTH_REQUIRED` | Run `monavi setup <pairing-code>`. Generate a fresh code in the monavi extension popup. |
-| `BROWSER_RUNTIME_MISSING` | Reinstall the CLI: `npm i -g @zenlix/monavi@latest`. |
+| `BROWSER_RUNTIME_MISSING` | Reinstall the CLI: `npm i -g @zenlix/monavi`. |
 | `monavi doctor` reports a missing or stale plugin | Run `monavi setup --reset`, then pair again with a fresh code. |
-| `monavi` is not found | Install it globally: `npm i -g @zenlix/monavi`. |
+| `monavi` is not found | Install it globally: `npm i -g @zenlix/monavi`. If you use pnpm, pass the version explicitly; `minimumReleaseAge` may otherwise pick an older release. |
 | Relay unreachable | Check the device connection in the extension popup and the relay URL in `monavi doctor`. |
+| Not sure whether this machine is paired | Run `monavi status`; add `--json` for scripts. |
+| Cannot find a running session | Run `monavi sessions` to list tracked sessions and their task status. |
 
 ## Task lifecycle
 
 | Symptom | Action |
 |---|---|
-| `APPROVAL_TIMEOUT` | The user did not approve in time. Ask them to approve, then retry. |
+| `APPROVAL_TIMEOUT` | The relay rejected the pending task token or the task expired. Make sure the relay is current, ask the user to approve, then retry with the pinned CLI. |
 | `APPROVAL_DENIED` | The user declined. Stop; do not retry the same task. |
 | `TASK_PAUSED` | The user took over. Keep the task, wait for Resume, then snapshot again before continuing. |
 | `TASK_ENDED` | The task is over. Start a new session with a new task ID. |
 | `TASK_NOT_FOUND` | The task expired or was stopped. Start a new session. |
+| A new task starts on every step | The previous task was closed or the session name changed. Reuse the same `--session` / `MONAVI_TASK_ID` and call `close` once at the end. |
+| `Failed to read: Resource temporarily unavailable` | The session was created by an older CLI whose approval wait exceeded the browser runtime's 30s limit. Upgrade to `@zenlix/monavi@latest`, run `monavi browser close`, then retry the same command. |
 | Tab group stays after the task | Run `monavi browser close` with the same `--session`. If it still stays, report it with the task ID. |
 
 ## Browser mechanics

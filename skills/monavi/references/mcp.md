@@ -69,13 +69,15 @@ await research.task.close();
 
 `browser.sessions()` lists sessions; `browser.closeAll()` closes all of them. Each named session is a separate task, so the user may need to approve it separately. Close every session when the work is done.
 
+Keep one session/task open for the whole piece of work. Reuse the same `browser.session(name)` for every step, and call `browser.task.close()` once at the end. Closing between steps ends the task and the next call creates a new one. Prefer `browser.open` for sequential navigation; use `browser.tab.new` / `browser.tab.*` when pages must stay open in parallel.
+
 The process can own multiple tasks through sessions. Set `MONAVI_TASK_ID` (or `--task-id`) for a stable base task ID; a new agent session should use a new ID. The process closes its used sessions when it exits. Raw `close` is blocked inside the REPL; use `browser.task.close()`.
 
 `browser.*` throws `BrowserCommandError` with `code`, `message`, `command`, `exitCode`, and `data`. Common codes include `TASK_PAUSED`, `APPROVAL_DENIED`, `TASK_ENDED`, `TASK_CLOSED`, and `BROWSER_COMMAND_FAILED`.
 
 ## Remote MCP
 
-Connect to `https://mcp.monavi.app/mcp` with a bearer token and an `X-Monavi-Task-Id` header. The remote server exposes `monavi_cdp` and task management. Use raw CDP for page actions; the server does not provide high-level page actions.
+Connect to `https://mcp.monavi.app/mcp` with a bearer token and an `X-Monavi-Task-Id` header. The remote server exposes `monavi_cdp` and task management. Use raw CDP for page actions; the server does not provide high-level page actions. Keep the same `X-Monavi-Task-Id` for every request in one agent session; a new ID creates a new task.
 
 ## Tool selection
 

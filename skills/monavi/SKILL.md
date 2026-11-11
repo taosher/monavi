@@ -32,7 +32,13 @@ monavi browser --session invoice-check snapshot -i
 
 If `MONAVI_TASK_ID` is set, use it as the task identity. Keep it stable for the whole session. Do not reuse a task ID after the task has ended.
 
-Each task owns a dedicated controlled tab. In browsers that support tab groups, every tab in the task shares one `monavi · <label>` group; browsers without tab groups keep the task isolated by tab. A page opened by the controlled tab can join the same task; use `monavi browser tab` to see the tabs. Commands apply to the active tab; re-snapshot after switching.
+Keep one task open for the whole piece of work:
+
+- Use the same `--session` name (or the same `MONAVI_TASK_ID`) for every command in the task, including `open`, `snapshot`, `click`, `wait`, and `close`.
+- `close` is the final action of the whole task. Keep the task open across steps; a new task starts a new controlled tab and may need a new approval.
+- Prefer `open` on the active tab for sequential navigation. Use `tab new` only when a page must stay open while you work elsewhere, and `tab tN` only to return to one of those pages. Re-snapshot after switching.
+
+Each task owns a dedicated controlled tab. In browsers that support tab groups, every tab in the task shares one `monavi · <label>` group; browsers without tab groups keep the task isolated by tab. Only tabs created by `monavi browser tab new` join the task. Links, `window.open`, and tabs the user opens stay normal tabs and are never controlled or closed by monavi. Use `monavi browser tab` to see the task tabs. Commands apply to the active tab; re-snapshot after switching.
 
 ## Approval and interruption
 
@@ -122,6 +128,8 @@ monavi browser dialog accept
 monavi browser dialog dismiss
 ```
 
+Use `open` to navigate the active tab when pages are sequential. `tab new` creates another tab in the same task for a page that must stay open while you work elsewhere. `tab tN` selects one of the task's tabs; re-snapshot after switching.
+
 Iframes are inlined in snapshots; refs inside them work directly. If the iframe is cross-origin or missing from the snapshot, switch with `frame` or ask the user to take over.
 
 ## Page diagnostics
@@ -159,19 +167,21 @@ While paused, do not issue new commands. If a command was already in flight, it 
 
 ## Finish the task
 
-Close the session when the work is done, or when the task fails and will not continue:
+Call `close` once, after the final step of the task, or when the task fails and will not continue:
 
 ```bash
 monavi browser close
 ```
 
-Use the same `--session` name if you used one. This ends the task and lets the extension clean up the task's tabs immediately. If the user wants to keep the tabs, the extension's **Keep tabs after a session ends** setting decides whether they stay open; still close the session.
+Use the same `--session` name if you used one. This ends the whole task and lets the extension clean up the task's tabs immediately. Keep the task open between steps; each new task creates a new controlled tab and may need a new approval. If the user wants to keep the tabs, the extension's **Keep tabs after a session ends** setting decides whether they stay open; still close the session once at the end.
 
 Do not leave a task open after answering the user. An open task keeps its tabs alive until the task expires.
 
 ## Setup and MCP
 
 - `monavi setup <pairing-code>` pairs this machine and creates the private configuration.
+- `monavi status` shows whether this machine is paired and whether the saved credential is still valid. Add `--json` for machine-readable output.
+- `monavi sessions` lists tracked browser sessions with their task status. Add `--json` for machine-readable output.
 - `monavi doctor` checks the relay, credentials, bundled runtime, and configuration.
 - `monavi mcp` starts the local stdio MCP server when the user prefers MCP over shell commands. Inside it, use the typed `browser.*` API and call `browser.help()` for signatures; `browser.session(name)` provides independent tasks.
 

@@ -17,7 +17,7 @@ monavi browser pushstate <url>  # SPA client-side navigation
 monavi browser close            # end this session and its task
 ```
 
-`open` accepts only the schemes above. If the page navigates outside them, the extension ends or pauses the task according to its policy.
+`open` accepts only the schemes above. If the page navigates outside them, the extension ends or pauses the task according to its policy. `close` ends the whole task: call it once, after the final step, and keep the task open across `open`, `snapshot`, `click`, and `wait`.
 
 ## Snapshot
 
@@ -126,7 +126,7 @@ monavi browser tab close              # close the active tab
 monavi browser tab close t2
 ```
 
-Tab ids are stable strings such as `t1`, `t2`; labels are optional and must be unique. Re-snapshot after switching because refs belong to the active tab.
+Tab ids are stable strings such as `t1`, `t2`; labels are optional and must be unique. Use `open` for sequential navigation in the active tab. `tab new` creates another tab in the same task for a page that must stay open while you work elsewhere; `tab tN` selects one of the task's tabs. Re-snapshot after switching because refs belong to the active tab.
 
 ## Frames and iframes
 
@@ -256,7 +256,7 @@ monavi browser --session my-task open https://example.com
 monavi browser --session my-task close
 ```
 
-Always close the session when the task is done. `session` and `session list` report the runtime's current sessions; the monavi task itself is closed by `close`.
+Keep the same `--session` name for every command in the task. Call `close` once, after the final step; closing between steps ends the task and the next command creates a new one. `session` and `session list` report the runtime's current sessions; the monavi task itself is closed by `close`.
 
 ## Diagnostics
 

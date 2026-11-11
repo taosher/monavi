@@ -68,7 +68,7 @@ monavi browser dialog accept
 monavi browser dialog dismiss
 ```
 
-Re-snapshot after switching tabs or frames.
+Re-snapshot after switching tabs or frames. Use `open` for sequential navigation in the active tab. Use `tab new` when a page must stay open while you work elsewhere; `tab tN` selects one of the task's tabs.
 
 ## Screenshots
 
@@ -104,4 +104,4 @@ monavi browser --session my-task snapshot -i
 monavi browser --session my-task close
 ```
 
-Always close the session when the task is done. See `session-management.md` for task isolation and parallel work.
+Keep the same `--session` name for every step. `close` is the final action of the task; closing between steps ends the task and the next command creates a new one. See `session-management.md` for task isolation and parallel work.
