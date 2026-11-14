@@ -8,7 +8,7 @@ allowed-tools: Bash(monavi:*)
 
 monavi lets you work in the user's real browser. The user stays in control: the first browser command creates a task, and the user approves it in the monavi extension. The task gets its own controlled tab (grouped when the browser supports tab groups), and the user can take over or stop it at any time.
 
-Use `monavi browser` for every page action. It runs the browser runtime bundled with monavi, so there is nothing else to install or configure.
+From a shell, use `monavi browser` for every page action. It runs the browser runtime bundled with monavi, so there is nothing else to install or configure. If your host uses the local MCP server instead, use the Playwright REPL described in **Setup and MCP** and `references/mcp.md`.
 
 ## The core loop
 
@@ -183,7 +183,7 @@ Do not leave a task open after answering the user. An open task keeps its tabs a
 - `monavi status` shows whether this machine is paired and whether the saved credential is still valid. Add `--json` for machine-readable output.
 - `monavi sessions` lists tracked browser sessions with their task status. Add `--json` for machine-readable output.
 - `monavi doctor` checks the relay, credentials, bundled runtime, and configuration.
-- `monavi mcp` starts the local stdio MCP server when the user prefers MCP over shell commands. Inside it, use the typed `browser.*` API and call `browser.help()` for signatures; `browser.session(name)` provides independent tasks.
+- `monavi mcp` starts the local stdio MCP server when the user prefers MCP over shell commands. Inside `monavi_repl`, start with `page = await open(url)` and use Playwright; `monavi.session(name)` provides independent tasks. See `references/mcp.md`.
 
 ## References
 
