@@ -68,7 +68,7 @@ monavi browser dialog accept
 monavi browser dialog dismiss
 ```
 
-Re-snapshot after switching tabs or frames. Use `open` for sequential navigation in the active tab. Use `tab new` when a page must stay open while you work elsewhere; `tab tN` selects one of the task's tabs.
+Re-snapshot after switching tabs or frames. Use `open` for sequential navigation in the active tab. Use `tab new` when a page must stay open while you work elsewhere; `tab tN` selects one of the task's tabs. A new tab opened in the same window by the current page (`target=_blank`, `window.open`, keyboard Enter shortcuts, or a form) joins the task automatically; list it with `monavi browser tab` and switch with `tab tN`. New windows and `window.open` popup windows stay ordinary tabs.
 
 ## Screenshots
 

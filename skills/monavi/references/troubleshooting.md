@@ -8,6 +8,7 @@
 | `BROWSER_RUNTIME_MISSING` | Reinstall the CLI: `npm i -g @zenlix/monavi`. |
 | `monavi doctor` reports a missing or stale plugin | Run `monavi setup --reset`, then pair again with a fresh code. |
 | `monavi` is not found | Install it globally: `npm i -g @zenlix/monavi`. If you use pnpm, pass the version explicitly; `minimumReleaseAge` may otherwise pick an older release. |
+| `EPERM` writing under `~/.monavi` | monavi needs a writable `MONAVI_HOME` (default `~/.monavi`) for credentials and session state. Report the permission error and ask the user to fix it; this is an environment problem, not a reason to switch tools. |
 | Relay unreachable | Check the device connection in the extension popup and the relay URL in `monavi doctor`. |
 | Not sure whether this machine is paired | Run `monavi status`; add `--json` for scripts. |
 | Cannot find a running session | Run `monavi sessions` to list tracked sessions and their task status. |
@@ -18,9 +19,13 @@
 |---|---|
 | `APPROVAL_TIMEOUT` | The relay rejected the pending task token or the task expired. Make sure the relay is current, ask the user to approve, then retry with the pinned CLI. |
 | `APPROVAL_DENIED` | The user declined. Stop; do not retry the same task. |
-| `TASK_PAUSED` | The user took over. Keep the task, wait for Resume, then snapshot again before continuing. |
+| A click opens a new browser window | Popup windows and new windows are outside the task. Ask the user to open the URL in the current controlled tab, or run `monavi browser tab new <url>`. |
+| A click appears to do nothing | The link may have opened a new tab. Run `monavi browser tab`, switch with `tab tN`, then snapshot the new page. |
+| `TASK_PAUSED` | The task is paused. Keep the task, ask the user to resume in the page banner or the monavi extension popup, then snapshot again before continuing. |
 | `TASK_ENDED` | The task is over. Start a new session with a new task ID. |
 | `TASK_NOT_FOUND` | The task expired or was stopped. Start a new session. |
+| `SESSION_EXPIRED` / `SESSION_NOT_RUNNING` | The saved session's task is no longer usable. The CLI already stopped the stale browser session; run `monavi browser open <url>` to start a new one. |
+| `Plugin 'monavi' returned success=false` | The browser runtime hid the real error. The CLI follows up with a `TASK_EXPIRED` line when the task is over; run `monavi browser open <url>`. If no hint appears, run `monavi report` and share the output with the user. |
 | A new task starts on every step | The previous task was closed or the session name changed. Reuse the same `--session` / `MONAVI_TASK_ID` and call `close` once at the end. |
 | `Failed to read: Resource temporarily unavailable` | The session was created by an older CLI whose approval wait exceeded the browser runtime's 30s limit. Upgrade to `@zenlix/monavi@latest`, run `monavi browser close`, then retry the same command. |
 | Tab group stays after the task | Run `monavi browser close` with the same `--session`. If it still stays, report it with the task ID. |

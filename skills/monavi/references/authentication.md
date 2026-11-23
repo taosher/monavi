@@ -12,7 +12,7 @@ When a page asks for a login, 2FA, captcha, or a judgment call:
 4. Ask them to click **Resume**.
 5. Run `monavi browser snapshot -i` again before continuing.
 
-While the task is paused, do not issue new commands. If a command was already in flight, it may return `TASK_PAUSED`; wait for the user to resume, then retry or snapshot again.
+While the task is paused, do not issue new commands. If a command was already in flight, it may return `TASK_PAUSED`; ask the user to resume in the page banner or the monavi extension popup, then retry or snapshot again.
 
 Do not try to guess credentials or bypass the login.
 

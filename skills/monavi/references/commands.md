@@ -126,7 +126,7 @@ monavi browser tab close              # close the active tab
 monavi browser tab close t2
 ```
 
-Tab ids are stable strings such as `t1`, `t2`; labels are optional and must be unique. Use `open` for sequential navigation in the active tab. `tab new` creates another tab in the same task for a page that must stay open while you work elsewhere; `tab tN` selects one of the task's tabs. Re-snapshot after switching because refs belong to the active tab.
+Tab ids are stable strings such as `t1`, `t2`; labels are optional and must be unique. Use `open` for sequential navigation in the active tab. `tab new` creates another tab in the same task for a page that must stay open while you work elsewhere; `tab tN` selects one of the task's tabs. While the task is active, a link or `window.open` that opens a new tab in the same window is added to the task automatically; use `monavi browser tab` to find it and `tab tN` to switch. Tabs opened during user takeover, in a new window, or as a `window.open` popup window stay ordinary. Re-snapshot after switching because refs belong to the active tab.
 
 ## Frames and iframes
 

@@ -159,7 +159,7 @@ Or set `typecheck: true` on `monavi_repl`. Diagnostics use TypeScript codes and 
 
 `monavi_repl` returns `{code, message}` errors. Common codes:
 
-- `TASK_PAUSED` — the user is controlling the tab. Keep the task, ask the user to click **Resume**, then retry the same action.
+- `TASK_PAUSED` — the task is paused, either because the user took over or for a technical reason such as the controlled tab leaving its group. Keep the task, ask the user to click **Resume** in the page banner or the monavi extension popup, then retry the same action.
 - `APPROVAL_DENIED` — the user denied the task. Do not retry the same task.
 - `APPROVAL_TIMEOUT` — the user did not approve in time. Ask them to approve, then retry.
 - `TASK_ENDED` — the task is over (stopped, expired, or closed). Create a new task with a new session name or restart `monavi mcp`.
@@ -171,7 +171,7 @@ Or set `typecheck: true` on `monavi_repl`. Diagnostics use TypeScript codes and 
 
 The REPL runs Playwright against the user's current browser context. It supports navigation, locators, auto-wait, evaluation, dialogs, uploads, keyboard/mouse, network events, screenshots, PDFs, multiple tabs, and same-origin iframes.
 
-It does not create new browser contexts or export cookies. Browser-level storage, permission, download, popup, service-worker, and cross-origin iframe APIs are outside monavi's task model. `browser.close()` only closes the Playwright client; use `monavi.end()` to end the task.
+It does not create new browser contexts or export cookies. Browser-level storage, permission, download, popup-window, service-worker, and cross-origin iframe APIs are outside monavi's task model. Tabs opened by a controlled page in the same window (`target=_blank`, `window.open`, keyboard Enter shortcuts) are adopted into the task; use `context.pages()` or `context.waitForEvent("page")`. New windows and `window.open` popup windows stay outside the task. `page.opener()` follows the extension's synthetic `openerId`; for a background opener it may point to the task's active tab. `browser.close()` only closes the Playwright client; use `monavi.end()` to end the task.
 
 ## Remote MCP
 
